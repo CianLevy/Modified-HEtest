@@ -15,10 +15,21 @@ this generic server. Source code for the client and server for each library can
 be found in hetest/cpp/baseline/<library-name>
 
 ## Building the framework
-To compile the framework run the "build.sh" script found in the "hetest"
-folder. Compilation will likely fail on the first few attempts as the order of
-dependencies means that all the required libraries cannot be compiled at once.
-Simply run the script until there are no longer any errors.
+Before compiling the framework the paths to all the libraries must be set in
+the SConscript files (SConscript files tell scons how to build the framework)
+for both the servers and clients. The relevant SConscript file for each 
+client/server can be found in the same folder as the client/server code. Both 
+the CPPPATH and LIBPATH must be changed in all SConscript files. The paths are
+currently set to "/home/cian/Libraries/<library name>". Assuming the libraries
+are all installed in the same directory, the easiest solution to correctly 
+setting the library paths is to find and replace all instances of 
+"/home/cian/Libraries/" in the framework with the correct path.
+
+After the paths have been set, the framework can be compiled by running the 
+"build.sh" script found in the "hetest" folder. Compilation will likely fail on
+the first few attempts as the order of dependencies means that all the required
+libraries cannot be compiled at once. Simply run the script until there are no 
+longer any errors.
 
 ## Generating Circuits
 The first step involved in using the framework is circuit generation. To
@@ -67,9 +78,3 @@ The "results.txt" file contains the result of circuit evaluation and the
 recorded times for the cryptographic operations and circuit evaluation. Note:
 the test harness has been rewritten to ensure that communication delays are not
 recorded in the profiling results. 
-
-
-
-
-
-
