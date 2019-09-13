@@ -1,0 +1,13 @@
+Import('builder')
+
+
+builder.SConscript('common/SConscript')
+builder.SConscript('stealth/SConscript')
+builder.SConscript('seal/SConscript')
+builder.SConscript('integer/SConscript')
+builder.SConscript('heaan/SConscript')
+builder.SConscript('helib/SConscript')
+
+
+
+

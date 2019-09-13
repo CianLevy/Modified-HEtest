@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/debug/integer-server-main.out",
+            "args": ["KEY\n0\nENDKEY\nCIRCUIT\nW=4,D=4.0,L=1\nG14:LMULconst(W4,[2])\nG16:LMUL(W4,W0)\nG15:LMULconst(W4,[2])\n",
+            "G28:LMUL(G16,W4)\nG29:LMULconst(G15,[2])\nG27:LADD(G14,W0)\nG33:LMULconst(G28,[2])\nG31:LMULconst(G28,[2])\n",
+            "G44:LADD(G31,G27)\nG46:LADD(G33,G29)\nG58:LADD(G44,G33)\nG59:LADDconst(G46,[2])\nG62:LMULconst(G59,[2])\n",
+            "G75:LADD(G62,G58)\nG86:LMULconst(G75,[2])\nENDCIRCUIT\n"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

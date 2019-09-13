@@ -1,0 +1,3 @@
+K=128
+poly_modulus_degree=16384
+plain_modulus=256

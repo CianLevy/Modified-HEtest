@@ -1,0 +1,49 @@
+import SCons.Script as scons
+Import('builder')
+
+builder.Library('heaan-gates', 
+        ['heaan-ctxt-container.cc', 'binary-gate.cc','unary-gate.cc'], 
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@logging', '@heaan-serialiser', 'pthread', 'HEAAN', 'ntl', 'gmp'])
+
+flex_outputs = builder.Flex('scanner.l')
+lemon_outputs = builder.Lemon('parser.y')
+
+heaan_parser_lib = builder.Library('heaan-scanner',
+        flex_outputs + lemon_outputs,
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@heaan-gates', '@logging', 'HEAAN', 'ntl', 'gmp'],
+        CCFLAGS = builder.env['CCFLAGS'] + ' -Wno-unused-variable ' +
+        ' -Wno-unused-function')
+
+scons.Depends(heaan_parser_lib, flex_outputs)
+scons.Depends(heaan_parser_lib, lemon_outputs)
+
+builder.Library('heaan-circuit-parser', ['circuit-parser.cc'],
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@heaan-circuit', '@heaan-scanner', 'HEAAN', 'ntl', 'gmp'])
+
+builder.Library('heaan-circuit', ['heaan-circuit.cc'],
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@heaan-gates', '@heaan-serialiser',  'HEAAN', 'ntl', 'gmp'])
+
+builder.Library('heaan-server', ['heaan-server.cc'],
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@baseline', '@heaan-serialiser', '@heaan-circuit-parser',  'HEAAN', 'ntl', 'gmp'])
+
+builder.Program('heaan-server-main.out', 'heaan-server-main.cc',
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@heaan-server',  'HEAAN', 'ntl', 'gmp'])
+

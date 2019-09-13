@@ -1,0 +1,10 @@
+test_type = RANDOM
+num_circuits = 1
+num_inputs = 1
+num_levels = 5
+K = 80
+L = 1
+D = 24
+W = 10
+B = 10
+generate = True

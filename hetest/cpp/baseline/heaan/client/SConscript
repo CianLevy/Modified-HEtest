@@ -1,0 +1,10 @@
+import SCons.Script as scons
+Import('builder')
+
+
+builder.Program('heaan-client-main.out', ['heaan-client-main.cc', 'heaan-client.cc'], 
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['@logging', '@baseline', '@heaan-serialiser', 'pthread', 'HEAAN', 'gmp', 'ntl'])
+

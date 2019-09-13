@@ -1,0 +1,38 @@
+import SCons.Script as scons
+Import('builder')
+
+builder.Library('helib-gates', 
+        ['helib-ctxt-container.cc', 'binary-gate.cc','unary-gate.cc'], 
+        CPPPATH='/home/cian/Libraries/HElib/include',
+	LIBPATH='/home/cian/Libraries/HElib/lib64', 
+        libs = ['@logging', 'pthread', 'ntl','helib','gmp'])
+
+flex_outputs = builder.Flex('scanner.l')
+lemon_outputs = builder.Lemon('parser.y')
+
+helib_parser_lib = builder.Library('helib-scanner',
+        flex_outputs + lemon_outputs,
+        CPPPATH='/home/cian/Libraries/HElib/include',
+	LIBPATH='/home/cian/Libraries/HElib/lib64', 
+        libs = ['@helib-gates', '@logging','pthread','helib', 'ntl','gmp'],
+        CCFLAGS = builder.env['CCFLAGS'] + ' -Wno-unused-variable ' +
+        ' -Wno-unused-function')
+
+scons.Depends(helib_parser_lib, flex_outputs)
+scons.Depends(helib_parser_lib, lemon_outputs)
+
+builder.Library('helib-circuit-parser', ['circuit-parser.cc'],
+        CPPPATH='/home/cian/Libraries/HElib/include',
+	LIBPATH='/home/cian/Libraries/HElib/lib64', 
+        libs = ['@helib-circuit', '@helib-scanner','pthread', 'helib', 'ntl','gmp'])
+
+builder.Library('helib-circuit', ['circuit.cc'],
+        CPPPATH='/home/cian/Libraries/HElib/include',
+	LIBPATH='/home/cian/Libraries/HElib/lib64', 
+        libs = ['@gates', 'pthread', 'helib', 'ntl','gmp'])
+
+builder.Library('helib-server', ['helib-server.cc'],
+        CPPPATH='/home/cian/Libraries/HElib/include',
+	LIBPATH='/home/cian/Libraries/HElib/lib64', 
+        libs = ['@baseline', '@helib-circuit-parser', 'pthread', 'helib', 'ntl','gmp'])
+

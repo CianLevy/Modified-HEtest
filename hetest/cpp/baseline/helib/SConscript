@@ -1,0 +1,4 @@
+Import('builder')
+
+builder.SConscript('server/SConscript')
+builder.SConscript('client/SConscript')

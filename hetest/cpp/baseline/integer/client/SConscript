@@ -1,0 +1,4 @@
+Import('builder')
+
+builder.Program('integer-client.out', ['integer-client.cc'], 
+        libs = ['@logging', '@string-algo'])

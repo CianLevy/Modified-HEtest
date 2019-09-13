@@ -1,0 +1,9 @@
+import SCons.Script as scons
+Import('builder')
+
+
+builder.Program('helib-client-main.out', ['helib-client-main.cc', 'helib-client.cc'], 
+        CPPPATH='/home/cian/Libraries/HElib/include',
+	LIBPATH='/home/cian/Libraries/HElib/lib64', 
+        libs = ['@logging', '@baseline', 'pthread', 'ntl','gmp','helib'])
+

@@ -1,0 +1,10 @@
+import SCons.Script as scons
+Import('builder')
+
+
+builder.Program('seal-client-main.out', ['seal-client-main.cc', 'seal-client.cc'], 
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@logging', '@baseline', 'pthread', 'seal'])
+

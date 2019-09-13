@@ -1,0 +1,31 @@
+import SCons.Script as scons
+Import('builder')
+
+builder.Library('integer-circuit-gates', 
+        ['binary-gate.cc','unary-gate.cc'], 
+        libs = ['@logging'])
+
+flex_outputs = builder.Flex('scanner.l')
+lemon_outputs = builder.Lemon('parser.y')
+
+integer_parser_lib = builder.Library('integer-scanner',
+        flex_outputs + lemon_outputs,
+        libs = ['@integer-circuit-gates', '@logging'],
+        CCFLAGS = builder.env['CCFLAGS'] + ' -Wno-unused-variable ' +
+        ' -Wno-unused-function')
+
+scons.Depends(integer_parser_lib, flex_outputs)
+scons.Depends(integer_parser_lib, lemon_outputs)
+
+builder.Library('integer-circuit-parser', ['circuit-parser.cc'],
+        libs = ['@integer-circuit', '@integer-scanner'])
+
+builder.Library('integer-circuit', ['integer-circuit.cc'],
+        libs = ['@integer-circuit-gates'])
+
+builder.Library('integer-baseline', ['integer-server.cc'],
+        libs = ['@baseline', '@integer-circuit-parser'])
+
+builder.Program('integer-baseline-main.out', 'integer-server-main.cc',
+        libs = ['@integer-baseline'],
+        CCFLAGS = builder.env['CCFLAGS'])

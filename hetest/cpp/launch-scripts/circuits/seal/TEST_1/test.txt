@@ -1,0 +1,6 @@
+KEY
+circuits/seal/TEST_1/key/1
+CIRCUIT
+circuits/seal/TEST_1/circuit/1
+INPUT
+circuits/seal/TEST_1/input/1

@@ -1,0 +1,6 @@
+Main constructs a new baseline and circuit parser then calls baseline.start
+	baseline.start reads the input stream and eventually calls ReadInputAndEvaluate and uses the circuit parser to construct a circuit
+		ReadInputAndEvaluate calls circuit.evaluate
+			circuit.evaluate returns output_gate.evaluate
+				output_gate.evaluate recurses through all the previous gates until the output can be returned (?)
+	baseline outputs the result

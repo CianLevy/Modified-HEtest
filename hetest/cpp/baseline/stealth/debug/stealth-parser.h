@@ -1,0 +1,11 @@
+#define NUM_INPUTS                      1
+#define LABEL                           2
+#define COLON                           3
+#define OUTPUT                          4
+#define AND                             5
+#define LPAREN                          6
+#define RPAREN                          7
+#define OR                              8
+#define XOR                             9
+#define NOT                            10
+#define WIRE                           11

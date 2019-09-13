@@ -1,0 +1,6 @@
+KEY
+circuits/helib/TEST_1/key/1
+CIRCUIT
+circuits/helib/TEST_1/circuit/1
+INPUT
+circuits/helib/TEST_1/input/1

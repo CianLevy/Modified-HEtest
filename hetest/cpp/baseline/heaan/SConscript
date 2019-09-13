@@ -1,0 +1,10 @@
+Import('builder')
+
+builder.Library('heaan-serialiser',
+	['heaan-serialiser.cc'],
+	CPPPATH='/home/cian/Libraries/HEAAN/include',
+	LIBPATH='/home/cian/Libraries/HEAAN/lib', 
+        libs = ['HEAAN', 'gmp', 'ntl'])
+
+builder.SConscript('server/SConscript')
+builder.SConscript('client/SConscript')

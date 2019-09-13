@@ -1,0 +1,49 @@
+import SCons.Script as scons
+Import('builder')
+
+builder.Library('seal-gates', 
+        ['seal-ctxt-container.cc', 'binary-gate.cc','unary-gate.cc'], 
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@logging', 'pthread',  'seal'])
+
+flex_outputs = builder.Flex('scanner.l')
+lemon_outputs = builder.Lemon('parser.y')
+
+seal_parser_lib = builder.Library('seal-scanner',
+        flex_outputs + lemon_outputs,
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@seal-gates', '@logging', 'seal'],
+        CCFLAGS = builder.env['CCFLAGS'] + ' -Wno-unused-variable ' +
+        ' -Wno-unused-function')
+
+scons.Depends(seal_parser_lib, flex_outputs)
+scons.Depends(seal_parser_lib, lemon_outputs)
+
+builder.Library('seal-circuit-parser', ['circuit-parser.cc'],
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@seal-circuit', '@seal-scanner', 'seal'])
+
+builder.Library('seal-circuit', ['seal-circuit.cc'],
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@gates',  'seal'])
+
+builder.Library('seal-server', ['seal-server.cc'],
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@baseline', '@seal-circuit-parser',  'seal'])
+
+builder.Program('seal-server-main.out', 'seal-server-main.cc',
+        CPPFLAGS='-std=c++17',
+        CPPPATH='/home/cian/Libraries/SEAL/include',
+	LIBPATH='/home/cian/Libraries/SEAL/lib', 
+        libs = ['@seal-server',  'seal'])
+
